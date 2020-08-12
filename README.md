@@ -106,16 +106,16 @@ Chính xác là như vậy, nhìn vào tên của bài, "RSA2" liệu có liên 
 1. Lấy k = de - 1 nếu là số lẻ thì chuyển qua bước 4
 2. Viết k dưới dạng k = r*2^t  (với t max)
 3. for i in range(100):
-    tạo số ngẫu nhiên g = [0; n-1]
-    y = pow(g, r, n)
-    nếu y = 1 or y = n-1 thì continue
-    for j in range(1, t-1):
-        x = pow(y, 2, n)
-        nếu x = 1 thì tới bước 5
-        nếu x = n-1 thì continue (ở vòng for i)
-        y = x
-    x = pow(y, 2, n)
-    nếu x = 1 thì tới bước 5
+    + tạo số ngẫu nhiên g = [0; n-1]
+    + y = pow(g, r, n)
+    + nếu y = 1 or y = n-1 thì continue
+    + for j in range(1, t-1):
+        - x = pow(y, 2, n)
+        - nếu x = 1 thì tới bước 5
+        - nếu x = n-1 thì continue 
+        - y = x
+    + x = pow(y, 2, n)
+    + nếu x = 1 thì tới bước 5
 4. không tìm được p, q
 5. p = gcd(y-1, n)
 
