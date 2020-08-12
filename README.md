@@ -171,7 +171,6 @@ def RecoverPrimeFactors(n, e, d):
 					elif x == n - 1:
 						continue
 					y = x
-					x = pow(y, 2, n)
 					if  x == 1:
 						p, q = outputPrimes(y - 1, n)
 						return p, q
