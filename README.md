@@ -257,7 +257,7 @@ Và mình đã nhận được hashes của tài khoản JOHN
 JOHN:1000:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
 ```
 
-2 đoạn hash trên là LM hash và NTLM hash. Thử sử dụng nhiều công cụ online để crack nó, nhưng không đem lại kết quả gì. Mình đã bỏ qua bài này, đến gần cuối giải mình xem lại thì nhận ra đây là hash trống, có nghĩa là password của hohn trống (không có password) một cú lừa cực mạnh đến từ BTC.
+2 đoạn hash trên là LM hash và NTLM hash. Thử sử dụng nhiều công cụ online để crack nó, nhưng không đem lại kết quả gì. Mình đã bỏ qua bài này, đến gần cuối giải mình xem lại thì nhận ra đây là hash trống, có nghĩa là password của john trống (không có password) một cú lừa cực mạnh đến từ BTC.
 
 Flag chính là hashes trống sha1
 ### flag wannagame{da39a3ee5e6b4b0d3255bfef95601890afd80709}
