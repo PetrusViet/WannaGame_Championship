@@ -201,15 +201,15 @@ q = 1560552262026586071902772856962487111474911471257979749931039407008103693151
 
 Bài này ta nhận được một hint là "DPAPI", DPAPI (the Data Protection Application Programming Interface) được sử dụng để mã hoá các bí mật (cookies, password, ...) dựa trên mật khẩu người dùng. 
 
-Mình thử tìm kiếm với từ khoá "Extract cookies from Google Chrome browser with DPAPI" thì tìm được công cụ mimikatz 
-trong đống file đề, mình tìm được file \AppData\Local\Microsoft\Edge\User Data\Default\Cookies. Mình thử decrypt nó với mimikatz
+Mình thử tìm kiếm với từ khoá "Extract cookies from Google Chrome browser with DPAPI" thì tìm được công cụ mimikatz. 
+Trong đống file đề, mình tìm được file \AppData\Local\Microsoft\Edge\User Data\Default\Cookies. Mình thử decrypt nó với mimikatz
 ```
 dpapi::chrome /in:"D:\save\CTF\AppData\Local\Microsoft\Edge\User Data\Default\Cookies" /unprotect
 ```
 
 Chương trình báo lỗi "ERROR kuhl_m_dpapi_chrome_decrypt ; No Alg and/or Key handle despite AES encryption" dường như nó cần 1 key nào đó để thực hiện encrypt
 
-Tìm hiểu kỹ hơn về DPAPI, mình thấy nó sẻ dụng master key được tạo ra từ mật khẩu người dùng để thực hiện Encrypt/Decrypt. Nghi ngờ master key nằm trong file lsass.dmp. Nên mình tìm kiếm với từ khoá "Extract masster key from lsass.dmp" thì tìm được (hướng dẫn mới)[https://programmersought.com/article/73061002330/] để lấy master key:
+Tìm hiểu kỹ hơn về DPAPI, mình thấy nó sẽ dụng master key được tạo ra từ mật khẩu người dùng để thực hiện Encrypt/Decrypt. Nghi ngờ master key nằm trong file lsass.dmp. Nên mình tìm kiếm với từ khoá "Extract masster key from lsass.dmp" thì tìm được (hướng dẫn mới)[https://programmersought.com/article/73061002330/] để lấy master key:
 ```
 sekurlsa::minidump D:\save\CTF\lsass.dmp
 sekurlsa::dpapi
