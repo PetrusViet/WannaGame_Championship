@@ -197,3 +197,69 @@ q = 1560552262026586071902772856962487111474911471257979749931039407008103693151
 
 ### flag: wannagame{4267f0950702836b9409e7b1f74b18f986018672}
 
+## Extract cookies from Google Chrome browser
+
+Bài này ta nhận được một hint là "DPAPI", DPAPI (the Data Protection Application Programming Interface) được sử dụng để mã hoá các bí mật (cookies, password, ...) dựa trên mật khẩu người dùng. 
+
+Mình thử tìm kiếm với từ khoá "Extract cookies from Google Chrome browser with DPAPI" thì tìm được công cụ mimikatz 
+trong đống file đề, mình tìm được file \AppData\Local\Microsoft\Edge\User Data\Default\Cookies. Mình thử decrypt nó với mimikatz
+```
+dpapi::chrome /in:"D:\save\CTF\AppData\Local\Microsoft\Edge\User Data\Default\Cookies" /unprotect
+```
+
+Chương trình báo lỗi "ERROR kuhl_m_dpapi_chrome_decrypt ; No Alg and/or Key handle despite AES encryption" dường như nó cần 1 key nào đó để thực hiện encrypt
+
+Tìm hiểu kỹ hơn về DPAPI, mình thấy nó sẻ dụng master key được tạo ra từ mật khẩu người dùng để thực hiện Encrypt/Decrypt. Nghi ngờ master key nằm trong file lsass.dmp. Nên mình tìm kiếm với từ khoá "Extract masster key from lsass.dmp" thì tìm được (hướng dẫn mới)[https://programmersought.com/article/73061002330/] để lấy master key:
+```
+sekurlsa::minidump D:\save\CTF\lsass.dmp
+sekurlsa::dpapi
+```
+Ta thu được master key của tài khoản Alice:
+```
+Authentication Id : 0 ; 2807848 (00000000:002ad828)
+Session           : Interactive from 2
+User Name         : Alice
+Domain            : DESKTOP-4D9UVLD
+Logon Server      : DESKTOP-4D9UVLD
+Logon Time        : 7/29/2020 11:51:15 AM
+SID               : S-1-5-21-3734529546-3570587082-1750843553-1001
+         [00000000]
+         * GUID      :  {b9820292-310b-4df7-8ff2-1a857a8f1ea5}
+         * Time      :  7/29/2020 1:37:53 PM
+         * MasterKey :  56b63acd7e2e9004aac16e14322148e8a2a09e3041adb4aa421adb6fd8530f9b8c72d0a82d898c451fc3c5ba9198c9827bc40c5dffd4a4bdccb803a559a2fac9
+         * sha1(key) :  ed634a59b7bb4cca37009449d3ccacec9f073b6f
+```
+
+Bây giờ quay lại decrypt file Cookies:
+```
+dpapi::chrome /in:"D:\save\CTF\AppData\Local\Microsoft\Edge\User Data\Default\Cookies" /masterkey:56b63acd7e2e9004aac16e14322148e8a2a09e3041adb4aa421adb6fd8530f9b8c72d0a82d898c451fc3c5ba9198c9827bc40c5dffd4a4bdccb803a559a2fac9
+```
+Bây giờ mình đã tìm được toàn bộ Cookies, thử tìm trong đống Cookies với từ khoá "Flag" mình nhận được:
+```
+Host  : cnsc.uit.edu.vn ( / )
+Name  : _Flag
+Dates : 7/29/2020 1:41:59 PM -> 12/1/2020 7:00:00 AM
+ * using BCrypt with AES-256-GCM
+Cookie: WannaGame{this_challenge_is_created_by_danhph}
+```
+
+### Flag: wannagame{cf7ff0167cce9940e5bd6761532c39ea01e15c8a}
+
+## Extract password from registry files
+
+Tìm kiếm với từ khoá là tên bài, mình nhận thấy cần sử dụng file SAM và file SYSTEM để lấy mật khẩu dưới dạng hashes. Để làm được điểu đó mình sử dụng công cụ (samdump2)[https://linux.die.net/man/1/samdump2] 
+```
+samdump2 -d sy sa
+```
+Và mình đã nhận được hashes của tài khoản JOHN
+
+```
+JOHN:1000:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+```
+
+2 đoạn hash trên là LM hash và NTLM hash. Thử sử dụng nhiều công cụ online để crack nó, nhưng không đem lại kết quả gì. Mình đã bỏ qua bài này, đến gần cuối giải mình xem lại thì nhận ra đây là hash trống, có nghĩa là password của hohn trống (không có password) một cú lừa cực mạnh đến từ BTC.
+
+Flag chính là hashes trống sha1
+### flag wannagame{da39a3ee5e6b4b0d3255bfef95601890afd80709}
+
+
