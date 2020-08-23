@@ -209,7 +209,7 @@ dpapi::chrome /in:"D:\save\CTF\AppData\Local\Microsoft\Edge\User Data\Default\Co
 
 Chương trình báo lỗi "ERROR kuhl_m_dpapi_chrome_decrypt ; No Alg and/or Key handle despite AES encryption" dường như nó cần 1 key nào đó để thực hiện encrypt
 
-Tìm hiểu kỹ hơn về DPAPI, mình thấy nó sẽ dụng master key được tạo ra từ mật khẩu người dùng để thực hiện Encrypt/Decrypt. Nghi ngờ master key nằm trong file lsass.dmp. Nên mình tìm kiếm với từ khoá "Extract masster key from lsass.dmp" thì tìm được (hướng dẫn mới)[https://programmersought.com/article/73061002330/] để lấy master key:
+Tìm hiểu kỹ hơn về DPAPI, mình thấy nó sẽ dụng master key được tạo ra từ mật khẩu người dùng để thực hiện Encrypt/Decrypt. Nghi ngờ master key nằm trong file lsass.dmp. Nên mình tìm kiếm với từ khoá "Extract masster key from lsass.dmp" thì tìm được [hướng dẫn mới](https://programmersought.com/article/73061002330/) để lấy master key:
 ```
 sekurlsa::minidump D:\save\CTF\lsass.dmp
 sekurlsa::dpapi
@@ -247,7 +247,7 @@ Cookie: WannaGame{this_challenge_is_created_by_danhph}
 
 ## Extract password from registry files
 
-Tìm kiếm với từ khoá là tên bài, mình nhận thấy cần sử dụng file SAM và file SYSTEM để lấy mật khẩu dưới dạng hashes. Để làm được điểu đó mình sử dụng công cụ (samdump2)[https://linux.die.net/man/1/samdump2] 
+Tìm kiếm với từ khoá là tên bài, mình nhận thấy cần sử dụng file SAM và file SYSTEM để lấy mật khẩu dưới dạng hashes. Để làm được điểu đó mình sử dụng công cụ [samdump2](https://linux.die.net/man/1/samdump2) 
 ```
 samdump2 -d sy sa
 ```
